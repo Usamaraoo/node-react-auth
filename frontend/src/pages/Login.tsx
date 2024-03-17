@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axiosConfig from "../utils/axios";
 import { NotificationManager } from "react-notifications";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../hooks/hooks";
 import { loginUser } from "../redux/features/user/userSlice";
 
@@ -18,14 +18,15 @@ const Login: FC = () => {
     reset,
     formState: { errors, isSubmitSuccessful },
   } = useForm<Inputs>();
-  // const count = useAppSelector((state) => state?.user);
-  // console.log("user", count);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       await dispatch(loginUser(data)).unwrap();
       NotificationManager.success("User login");
+      navigate('/')
+
     } catch (error: any) {
       NotificationManager.error(error);
       console.log(error);

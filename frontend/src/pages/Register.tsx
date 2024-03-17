@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axiosConfig from "../utils/axios";
 import { NotificationManager } from "react-notifications";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/hooks";
 import { registerUser } from "../redux/features/user/userSlice";
 
@@ -22,12 +22,15 @@ const Register: FC = () => {
     formState: { errors, isSubmitSuccessful },
   } = useForm<Inputs>();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       await dispatch(registerUser(data)).unwrap();
       NotificationManager.success("User register");
       reset();
+      navigate('/')
+
     } catch (error: any) {
       NotificationManager.error(error);
       console.log(error);
@@ -130,7 +133,7 @@ const Register: FC = () => {
             </button>
           </div>
           <Link
-            className="text-indigo-600 underline tracking-widest  "
+            className="text-indigo-600 underline tracking-widest block "
             to="/login"
           >
             Or login
