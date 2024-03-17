@@ -31,12 +31,20 @@ const Navbar = () => {
           </div>
           <div className="flex items-center">
             {user.jwt ? (
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 text-white px-4 py-2 rounded-md shadow-md mr-4"
-              >
-                Logout
-              </button>
+              <>
+                <Link
+                  to="/profile"
+                  className="text-white mr-4 hover:text-gray-300 hover:underline "
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md shadow-md mr-4"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <button
                 onClick={handleLogin}

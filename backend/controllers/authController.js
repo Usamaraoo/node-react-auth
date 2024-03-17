@@ -43,7 +43,7 @@ const login = async (req, res) => {
     if (match) {
       const token = jwt.sign(
         { name: getUser.name, email: getUser.email },
-        "secret",
+        process.env.JWT_SECRET,
         { expiresIn: "2m" }
       );
       res.cookie("token", jwt, {
@@ -52,7 +52,7 @@ const login = async (req, res) => {
         sameSite: "None",
         maxAge: 24 * 60 * 60 * 1000,
       });
-      res.status(200).json({ message: "user login", user:getUser, token });
+      res.status(200).json({ message: "user login", user: getUser, token });
     } else {
       res.status(400).json({ message: "Incorrect password" });
     }

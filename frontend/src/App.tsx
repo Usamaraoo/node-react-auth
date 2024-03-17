@@ -9,6 +9,7 @@ import { NotificationContainer } from "react-notifications";
 import PrivateRoutes from "./utils/PrivateRoute";
 import Navbar from "./Layouts/Navbar";
 import PublicRoute from "./utils/PublicRoute";
+import { Profile } from "./pages/Profile";
 const App: FC = () => {
   return (
     <div>
@@ -22,6 +23,7 @@ const App: FC = () => {
           </Route>
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
       </Router>

@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 require("dotenv/config"); // configure reading from .env
 // local
 const authApies = require("./routes/authApi");
+const userApies = require("./routes/userApi");
 
 //constant
 const port = process.env.PORT;
@@ -24,6 +25,7 @@ app.use(bodyparser.json());
 
 // apies
 app.use("/api/auth", authApies);
+app.use("/api/user", userApies);
 
 try {
   mongoose.connect(uri);
