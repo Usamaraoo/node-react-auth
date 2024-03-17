@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { useAppSelector } from "../hooks/hooks";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../redux/features/user/userSlice";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const user = useAppSelector((user) => user);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleLogin = () => {
     // Logic for login
-    setIsLoggedIn(true);
+    navigate("/");
   };
 
   const handleLogout = () => {
     // Logic for logout
+    dispatch(logoutAction());
     setIsLoggedIn(false);
   };
 

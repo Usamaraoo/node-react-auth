@@ -42,7 +42,7 @@ export const registerUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await UserRegisterApi(name, email,password);
+      const response = await UserRegisterApi(name, email, password);
       console.log("resss", response);
       return response?.data;
     } catch (error: any) {
@@ -54,7 +54,13 @@ export const registerUser = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    logoutAction(state) {
+      state.jwt = "";
+      state.name = "";
+      state.email = "";
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state, action) => {
       state.loading = true;
@@ -86,5 +92,5 @@ const userSlice = createSlice({
   },
 });
 
-export const {} = userSlice.actions;
+export const { logoutAction } = userSlice.actions;
 export default userSlice.reducer;
