@@ -21,7 +21,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Link to='/' className="text-white text-lg font-semibold">AuthApp</Link>
+            <Link to="/" className="text-white text-lg font-semibold">
+              AuthApp
+            </Link>
           </div>
           <div className="flex items-center">
             {user.jwt ? (

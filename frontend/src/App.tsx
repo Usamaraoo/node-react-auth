@@ -8,15 +8,18 @@ import Login from "./pages/Login";
 import { NotificationContainer } from "react-notifications";
 import PrivateRoutes from "./utils/PrivateRoute";
 import Navbar from "./Layouts/Navbar";
+import PublicRoute from "./utils/PublicRoute";
 const App: FC = () => {
   return (
     <div>
       <NotificationContainer />
       <Router>
-        <Navbar/>
+        <Navbar />
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<Home />} />
           </Route>
