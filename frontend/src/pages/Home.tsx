@@ -4,6 +4,7 @@ import Widget from "../component/Widget";
 const Home: FC = () => {
   return (
     <div>
+      <h1 className="text-3xl text-center py-8 fpnt-bold">Home</h1>
       <div className="flex flex-wrap justify-center">
         <Widget
           title="Sales Summary"
