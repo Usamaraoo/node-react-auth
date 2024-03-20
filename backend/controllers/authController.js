@@ -43,11 +43,11 @@ const login = async (req, res) => {
     }
     const match = await bcrypt.compare(password, getUser.password);
     if (match) {
-      const token = jwt.sign(
-        { name: getUser.name, email: getUser.email },
-        process.env.JWT_SECRET,
-        { expiresIn: "2m" }
-      );
+      const token = createJwt({
+        name: getUser.name,
+        email: getUser.email,
+        loginMethod: "InApp",
+      });
       res.cookie("token", token, {
         httpOnly: true,
         secure: true,
@@ -67,14 +67,19 @@ const login = async (req, res) => {
 // will create or login user
 const loginWithGoolge = async (req, res) => {
   const user = req.user;
-  console.log('email',user._json.email);
-  const getUser = await UserModal.findOne( {name:user.displayName} );
+  console.log("email", user._json.email);
+  const getUser = await UserModal.findOne({ name: user.displayName });
   if (!getUser) {
     const newUser = await UserModal.create({
       name: user.displayName,
       email: user._json.email,
     });
-    const token = createJwt({ name: newUser.email, email: newUser.email,...user });
+    const token = createJwt({
+      name: newUser.email,
+      email: newUser.email,
+      loginMethod: "oauth",
+      ...user,
+    });
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
@@ -82,9 +87,12 @@ const loginWithGoolge = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
     res.redirect(`${process.env.CLIENT_URL}?token=${token}`);
-  } 
-  else {
-    const token = createJwt({ name: getUser.email, email: getUser.email });
+  } else {
+    const token = createJwt({
+      name: getUser.email,
+      email: getUser.email,
+      loginMethod: "oauth",
+    });
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,

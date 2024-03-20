@@ -34,11 +34,13 @@ router.get("/login/failed", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.logout();
-  // res.json({ok:'ok'})
-  res.redirect(CLIENT_URL);
+  res.json({ message: "user logout" });
 });
 
-router.get("/google", passport.authenticate("google", { scope: ['email',"profile"] }));
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
 
 router.get(
   "/google/callback",

@@ -2,14 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { UserLoginApi, UserRegisterApi } from "../../../apies/authApis";
 import { AxiosError } from "axios";
 
-export interface user {
+export interface userInterface {
   name: string;
   email: string;
   jwt: string;
-  loading: true | false;
+  loginMethod?: "InApp" | "oauth";
+  loading?: true | false;
 }
 
-let initialState: user = {
+let initialState: userInterface = {
   name: "",
   email: "",
   jwt: "",
@@ -55,6 +56,13 @@ const userSlice = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {
+    googleLogin(state, action) {
+      const { email, name, jwt, loginMethod } = action.payload;
+      state.email = email;
+      state.name = name;
+      state.jwt = jwt;
+      state.loginMethod = loginMethod
+    },
     logoutAction(state) {
       state.jwt = "";
       state.name = "";
@@ -92,5 +100,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logoutAction } = userSlice.actions;
+export const { logoutAction, googleLogin } = userSlice.actions;
 export default userSlice.reducer;

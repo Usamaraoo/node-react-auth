@@ -1,11 +1,11 @@
-import React, { useState } from "react";
 import { useAppSelector } from "../hooks/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutAction } from "../redux/features/user/userSlice";
+import axiosConfig from "../utils/axios";
+import { NotificationManager } from "react-notifications";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const user = useAppSelector((user) => user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -14,14 +14,15 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const handleLogout = () => {
-    // Logic for logout
+  const handleLogout =async () => {
     dispatch(logoutAction());
-    setIsLoggedIn(false);
+    if (user.loginMethod === "oauth") {
+      const res = await axiosConfig.get('http://localhost:5000/api/auth/logout')
+      console.log('logout',res.data);
+    }
+    NotificationManager.success("User logout");
   };
-  const googlelogout =() => {
-    window.open("http://localhost:5000/api/auth/logout", "_self");
-};
+  const googlelogout = () => {};
   return (
     <nav className="bg-gray-800 p-4">
       <div className="max-w-7xl mx-auto">
@@ -56,8 +57,9 @@ const Navbar = () => {
               </button>
             )}
 
-<li className="listItem text-white" onClick={googlelogout}>Logout</li>
-          
+            {/* <li className="listItem text-white" onClick={googlelogout}>
+              Logout
+            </li> */}
           </div>
         </div>
       </div>
