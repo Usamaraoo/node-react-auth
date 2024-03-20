@@ -76,9 +76,8 @@ const loginWithGoolge = async (req, res) => {
     });
     const token = createJwt({
       name: newUser.email,
-      email: newUser.email,
+      email: newUser.name,
       loginMethod: "oauth",
-      ...user,
     });
     res.cookie("token", token, {
       httpOnly: true,
@@ -90,7 +89,7 @@ const loginWithGoolge = async (req, res) => {
   } else {
     const token = createJwt({
       name: getUser.email,
-      email: getUser.email,
+      email: getUser.name,
       loginMethod: "oauth",
     });
     res.cookie("token", token, {

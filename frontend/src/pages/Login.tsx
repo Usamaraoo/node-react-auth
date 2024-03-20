@@ -86,7 +86,7 @@ const Login: FC = () => {
             </button>
           </div>
         </form>
-        <GoogleLoginButton />
+        <GoogleLoginButton text='Sign In with Google'/>
         <div>
           <Link
             className="text-indigo-600 underline tracking-widest  "
