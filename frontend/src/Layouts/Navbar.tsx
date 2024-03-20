@@ -22,7 +22,6 @@ const Navbar = () => {
     }
     NotificationManager.success("User logout");
   };
-  const googlelogout = () => {};
   return (
     <nav className="bg-gray-800 p-4">
       <div className="max-w-7xl mx-auto">

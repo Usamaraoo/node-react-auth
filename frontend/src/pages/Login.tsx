@@ -25,8 +25,7 @@ const Login: FC = () => {
     try {
       await dispatch(loginUser(data)).unwrap();
       NotificationManager.success("User login");
-      navigate('/')
-
+      navigate("/");
     } catch (error: any) {
       NotificationManager.error(error);
       console.log(error);
@@ -37,7 +36,7 @@ const Login: FC = () => {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Login
+            Sign In
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
@@ -83,19 +82,19 @@ const Login: FC = () => {
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Login
+              Sign in
             </button>
           </div>
-          <div>
-            <Link
-              className="text-indigo-600 underline tracking-widest  "
-              to="/register"
-              >
-              Or register
-            </Link>
-          </div>
         </form>
-                <GoogleLoginButton/>
+        <GoogleLoginButton />
+        <div>
+          <Link
+            className="text-indigo-600 underline tracking-widest  "
+            to="/register"
+          >
+            Or register
+          </Link>
+        </div>
       </div>
     </div>
   );
