@@ -4,7 +4,7 @@ import { NotificationManager } from "react-notifications";
 import axiosConfig from "../utils/axios";
 
 export const Profile = () => {
-  const { name, email, jwt } = useAppSelector((user) => user);
+  const { name, email, jwt, image } = useAppSelector((user) => user);
   const copyTokenToClipboard = () => {
     navigator.clipboard.writeText(jwt);
     NotificationManager.success("Token copied");
@@ -15,7 +15,7 @@ export const Profile = () => {
       try {
         const res = await axiosConfig.get(`/api/user/info/${name}`);
         console.log("res", res);
-      } catch (error:any) {
+      } catch (error: any) {
         console.log(error?.response.status);
       }
     })();
@@ -24,6 +24,10 @@ export const Profile = () => {
     <div className="max-w-md mx-auto mt-8 bg-white p-8 rounded-md shadow-md">
       <h2 className="text-2xl font-bold mb-4">Profile Information</h2>
       <div>
+        <div className="">
+
+        {image && <img className="rounded-full  my-4" src={image} alt={name} />}
+        </div>
         <p className="text-lg">
           <span className="font-semibold">Name:</span> {name}
         </p>

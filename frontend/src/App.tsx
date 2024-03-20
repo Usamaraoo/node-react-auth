@@ -31,7 +31,7 @@ const App: FC = () => {
       console.log('user',user);
       
       dispatch(
-        googleLogin({ name: user?.name, email: user?.email, jwt: token,loginMethod:user.loginMethod })
+        googleLogin({ name: user?.name, email: user?.email,image:user.image, jwt: token,loginMethod:user.loginMethod })
       );
     }
   }, []);

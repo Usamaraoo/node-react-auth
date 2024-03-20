@@ -60,24 +60,27 @@ const login = async (req, res) => {
     }
   } catch (error) {
     console.log("err", error);
-    // res.json(error);
   }
 };
 
 // will create or login user
 const loginWithGoolge = async (req, res) => {
   const user = req.user;
-  console.log("email", user._json.email);
+  
+  console.log("email", user);
   const getUser = await UserModal.findOne({ name: user.displayName });
   if (!getUser) {
     const newUser = await UserModal.create({
       name: user.displayName,
       email: user._json.email,
+      image:user._json.picture
     });
     const token = createJwt({
       name: newUser.email,
       email: newUser.name,
+      image:user._json.picture,
       loginMethod: "oauth",
+
     });
     res.cookie("token", token, {
       httpOnly: true,
@@ -90,6 +93,7 @@ const loginWithGoolge = async (req, res) => {
     const token = createJwt({
       name: getUser.email,
       email: getUser.name,
+      image:user._json.picture,
       loginMethod: "oauth",
     });
     res.cookie("token", token, {

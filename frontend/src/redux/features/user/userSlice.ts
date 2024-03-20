@@ -6,6 +6,7 @@ export interface userInterface {
   name: string;
   email: string;
   jwt: string;
+  image?:string
   loginMethod?: "InApp" | "oauth";
   loading?: true | false;
 }
@@ -57,10 +58,11 @@ const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     googleLogin(state, action) {
-      const { email, name, jwt, loginMethod } = action.payload;
+      const { email, name, jwt,image, loginMethod } = action.payload;
       state.email = email;
       state.name = name;
       state.jwt = jwt;
+      state.image = image
       state.loginMethod = loginMethod
     },
     logoutAction(state) {
