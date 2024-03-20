@@ -10,6 +10,7 @@ const PrivateRoutes = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // checking if current token is expired or not
     if (user.jwt !== "") {
       const tokenExpireDate: any = jwtDecode(user.jwt)?.exp;
       if (tokenExpireDate * 1000 < Date.now().valueOf()) {

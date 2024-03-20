@@ -4,6 +4,7 @@ import { NotificationManager } from "react-notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/hooks";
 import { loginUser } from "../redux/features/user/userSlice";
+import { GoogleLoginButton } from "../component/GoogleLoginButton";
 
 type Inputs = {
   email: string;
@@ -89,11 +90,12 @@ const Login: FC = () => {
             <Link
               className="text-indigo-600 underline tracking-widest  "
               to="/register"
-            >
+              >
               Or register
             </Link>
           </div>
         </form>
+                <GoogleLoginButton/>
       </div>
     </div>
   );

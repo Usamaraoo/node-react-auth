@@ -19,7 +19,9 @@ const Navbar = () => {
     dispatch(logoutAction());
     setIsLoggedIn(false);
   };
-
+  const googlelogout =() => {
+    window.open("http://localhost:5000/api/auth/logout", "_self");
+};
   return (
     <nav className="bg-gray-800 p-4">
       <div className="max-w-7xl mx-auto">
@@ -53,6 +55,9 @@ const Navbar = () => {
                 Login
               </button>
             )}
+
+<li className="listItem text-white" onClick={googlelogout}>Logout</li>
+          
           </div>
         </div>
       </div>

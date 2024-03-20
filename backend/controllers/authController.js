@@ -1,6 +1,8 @@
 const UserModal = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const createJwt = require("../utils/createJwt");
+require("dotenv/config"); // configure reading from .env
 
 const register = async (req, res) => {
   try {
@@ -46,7 +48,7 @@ const login = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "2m" }
       );
-      res.cookie("token", jwt, {
+      res.cookie("token", token, {
         httpOnly: true,
         secure: true,
         sameSite: "None",
@@ -62,7 +64,39 @@ const login = async (req, res) => {
   }
 };
 
+// will create or login user
+const loginWithGoolge = async (req, res) => {
+  const user = req.user;
+  console.log('email',user._json.email);
+  const getUser = await UserModal.findOne( {name:user.displayName} );
+  if (!getUser) {
+    const newUser = await UserModal.create({
+      name: user.displayName,
+      email: user._json.email,
+    });
+    const token = createJwt({ name: newUser.email, email: newUser.email,...user });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    res.redirect(`${process.env.CLIENT_URL}?token=${token}`);
+  } 
+  else {
+    const token = createJwt({ name: getUser.email, email: getUser.email });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    res.redirect(`${process.env.CLIENT_URL}?token=${token}`);
+  }
+};
+
 module.exports = {
   login,
   register,
+  loginWithGoolge,
 };

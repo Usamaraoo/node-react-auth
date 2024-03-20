@@ -3,6 +3,9 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const cookieSession = require("cookie-session");
+const passport = require("passport");
+const passportSetup = require("./utils/passport")
 
 require("dotenv/config"); // configure reading from .env
 // local
@@ -22,6 +25,13 @@ app.use(
   })
 );
 app.use(bodyparser.json());
+app.use(
+  cookieSession({name:"session", keys:["openreplay"], maxAge: 0,})
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // apies
 app.use("/api/auth", authApies);
