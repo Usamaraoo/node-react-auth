@@ -7,7 +7,7 @@ export interface userInterface {
   email: string;
   jwt: string;
   image?:string
-  loginMethod?: "InApp" | "oauth";
+  loginMethod?: "InApp" | "Google" |"Github";
   loading?: true | false;
 }
 

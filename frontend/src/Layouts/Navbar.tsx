@@ -16,7 +16,7 @@ const Navbar = () => {
 
   const handleLogout =async () => {
     dispatch(logoutAction());
-    if (user.loginMethod === "oauth") {
+    if (user.loginMethod === "Google" || user.loginMethod === "Github" ) {
       const res = await axiosConfig.get('http://localhost:5000/api/auth/logout')
       console.log('logout',res.data);
     }

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/hooks";
 import { loginUser } from "../redux/features/user/userSlice";
 import { GoogleLoginButton } from "../component/GoogleLoginButton";
+import { GithubLoginButton } from "../component/GithubLoginButton";
 
 type Inputs = {
   email: string;
@@ -33,7 +34,7 @@ const Login: FC = () => {
   };
   return (
     <div className="min-h-screen flex items-start justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-w-md w-full ">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign In
@@ -86,8 +87,12 @@ const Login: FC = () => {
             </button>
           </div>
         </form>
-        <GoogleLoginButton text='Sign In with Google'/>
-        <div>
+        <div className="mt-3">
+        <GoogleLoginButton text="Sign In with Google" />
+        <GithubLoginButton text="Sign In with Github" />
+        </div>
+      
+        <div className="mt-2">
           <Link
             className="text-indigo-600 underline tracking-widest  "
             to="/register"

@@ -1,11 +1,11 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import axiosConfig from "../utils/axios";
 import { NotificationManager } from "react-notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/hooks";
 import { registerUser } from "../redux/features/user/userSlice";
 import { GoogleLoginButton } from "../component/GoogleLoginButton";
+import { GithubLoginButton } from "../component/GithubLoginButton";
 
 type Inputs = {
   name: string;
@@ -30,8 +30,7 @@ const Register: FC = () => {
       await dispatch(registerUser(data)).unwrap();
       NotificationManager.success("User register");
       reset();
-      navigate('/')
-
+      navigate("/");
     } catch (error: any) {
       NotificationManager.error(error);
       console.log(error);
@@ -40,7 +39,7 @@ const Register: FC = () => {
 
   return (
     <div className=" min-h-screen flex items-start justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-w-md w-full ">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Register
@@ -134,13 +133,16 @@ const Register: FC = () => {
             </button>
           </div>
         </form>
-        <GoogleLoginButton text='Sign Up with Google'/>
-          <Link
-            className="text-indigo-600 underline tracking-widest block "
-            to="/login"
-          >
-            Or login
-          </Link>
+        <div className="mt-3">
+          <GoogleLoginButton text="Sign Up with Google" />
+          <GithubLoginButton text="Sign up with Github" />
+        </div>
+        <Link
+          className="text-indigo-600 underline tracking-widest block mt-2"
+          to="/login"
+        >
+          Or login
+        </Link>
       </div>
     </div>
   );
