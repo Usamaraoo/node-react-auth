@@ -41,22 +41,26 @@ const login = async (req, res) => {
     if (!getUser) {
       res.status(400).json({ message: "User doesn't exist" });
     }
-    const match = await bcrypt.compare(password, getUser.password);
-    if (match) {
-      const token = createJwt({
-        name: getUser.name,
-        email: getUser.email,
-        loginMethod: "InApp",
-      });
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "None",
-        maxAge: 24 * 60 * 60 * 1000,
-      });
-      res.status(200).json({ message: "user login", user: getUser, token });
-    } else {
-      res.status(400).json({ message: "Incorrect password" });
+    if (getUser.loginMethod === "InApp") {
+      const match = await bcrypt.compare(password, getUser.password);
+      if (match) {
+        const token = createJwt({
+          name: getUser.name,
+          email: getUser.email,
+          loginMethod: "InApp",
+        });
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "None",
+          maxAge: 24 * 60 * 60 * 1000,
+        });
+        res.status(200).json({ message: "user login", user: getUser, token });
+      } else {
+        res.status(400).json({ message: "Incorrect password" });
+      }
+    }else{
+      res.status(400).json({ message: `This email is registered with ${getUser.loginMethod} login` });
     }
   } catch (error) {
     console.log("err", error);
@@ -105,7 +109,7 @@ const loginWithGoolge = async (req, res) => {
     req.logout();
     res
       .status(401)
-      .json({ message: "user already exists with other social acount" });
+      .json({ message: `user already exists with ${getUser.loginMethod} acount` });
   }
 };
 
@@ -153,7 +157,7 @@ const loginWithGithub = async (req, res) => {
 
       res
         .status(401)
-        .json({ message: "user already exists with other social acount" });
+        .json({ message: `user already exists with ${getUser.loginMethod} acount` });
     }
   } catch (error) {
     console.log(error);

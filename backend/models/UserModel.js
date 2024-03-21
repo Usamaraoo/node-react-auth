@@ -18,6 +18,7 @@ const userSchema = mongoose.Schema(
     loginMethod: {
       type: String,
       enum: ["Google", "Github", "InApp"],
+      default:'InApp'
     },
   },
   { collection: "Users" }
