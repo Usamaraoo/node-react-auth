@@ -4,15 +4,13 @@ const {
   login,
   register,
   loginWithGoolge,
+  loginWithGithub,
 } = require("../controllers/authController");
 var passport = require("passport");
-var GoogleStrategy = require("passport-google-oidc");
-const UserModal = require("../models/UserModel");
 
 router.post("/register", register);
 
 router.post("/login", login);
-const CLIENT_URL = "http://localhost:3000/";
 
 router.get("/login/success", (req, res) => {
   if (req.user) {
@@ -45,7 +43,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: CLIENT_URL,
+    successRedirect: process.env.CLIENT_URL,
     failureRedirect: "/login/failed",
   })
 );
@@ -54,9 +52,26 @@ router.get(
   "/redirect/google",
   passport.authenticate("google", {
     // successReturnToOrRedirect: CLIENT_URL,
-    failureRedirect: CLIENT_URL,
+    failureRedirect: process.env.CLIENT_URL,
   }),
   loginWithGoolge
+);
+
+router.get("/github", passport.authenticate("github", { scope: ["profile"] }));
+
+// router.get(
+//   "/callback/github",
+//   passport.authenticate("github", {
+//     successRedirect: process.env.CLIENT_URL,
+//     failureRedirect: "/login/failed",
+//   })
+// );
+router.get(
+  "/callback/github",
+  passport.authenticate("github", {
+    // successRedirect: process.env.CLIENT_URL,
+    failureRedirect: "/login/failed",
+  }), loginWithGithub
 );
 
 module.exports = router;

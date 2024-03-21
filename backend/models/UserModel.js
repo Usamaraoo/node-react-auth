@@ -15,6 +15,10 @@ const userSchema = mongoose.Schema(
       type: String,
       // required: true,
     },
+    loginMethod: {
+      type: String,
+      enum: ["Google", "Github", "InApp"],
+    },
   },
   { collection: "Users" }
 );

@@ -66,21 +66,33 @@ const login = async (req, res) => {
 // will create or login user
 const loginWithGoolge = async (req, res) => {
   const user = req.user;
-  
-  console.log("email", user);
-  const getUser = await UserModal.findOne({ name: user.displayName });
+  const getUser = await UserModal.findOne({ email: user._json.email });
   if (!getUser) {
     const newUser = await UserModal.create({
       name: user.displayName,
       email: user._json.email,
-      image:user._json.picture
+      image: user._json.picture,
+      loginMethod: "Google",
     });
     const token = createJwt({
       name: newUser.email,
       email: newUser.name,
-      image:user._json.picture,
-      loginMethod: "oauth",
-
+      image: user._json.picture,
+      loginMethod: "Google",
+    });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    res.redirect(`${process.env.CLIENT_URL}?token=${token}`);
+  } else if (getUser.loginMethod === "Google") {
+    const token = createJwt({
+      name: getUser.email,
+      email: getUser.name,
+      image: user._json.picture,
+      loginMethod: "Goolge",
     });
     res.cookie("token", token, {
       httpOnly: true,
@@ -90,19 +102,61 @@ const loginWithGoolge = async (req, res) => {
     });
     res.redirect(`${process.env.CLIENT_URL}?token=${token}`);
   } else {
-    const token = createJwt({
-      name: getUser.email,
-      email: getUser.name,
-      image:user._json.picture,
-      loginMethod: "oauth",
-    });
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-    res.redirect(`${process.env.CLIENT_URL}?token=${token}`);
+    req.logout();
+    res
+      .status(401)
+      .json({ message: "user already exists with other social acount" });
+  }
+};
+
+const loginWithGithub = async (req, res) => {
+  try {
+    const user = req.user;
+    const getUser = await UserModal.findOne({ email: user._json.email });
+    // if new user
+    if (!getUser) {
+      const newUser = await UserModal.create({
+        name: user.displayName,
+        email: user._json.email,
+        image: user._json.avatar_url,
+        loginMethod: "Github",
+      });
+      const token = createJwt({
+        name: newUser.email,
+        email: newUser.name,
+        image: user._json.avatar_url,
+        loginMethod: "Github",
+      });
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      res.redirect(`${process.env.CLIENT_URL}?token=${token}`);
+    } else if (getUser.loginMethod === "Github") {
+      const token = createJwt({
+        name: getUser.email,
+        email: getUser.name,
+        image: user._json.avatar_url,
+        loginMethod: getUser.loginMethod,
+      });
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      res.redirect(`${process.env.CLIENT_URL}?token=${token}`);
+    } else {
+      req.logout();
+
+      res
+        .status(401)
+        .json({ message: "user already exists with other social acount" });
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -110,4 +164,5 @@ module.exports = {
   login,
   register,
   loginWithGoolge,
+  loginWithGithub,
 };
